@@ -3,17 +3,18 @@ package it.codegardenroma.springasync;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.AsyncResult;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Controller
-
 public class SimpleController {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleController.class);
@@ -21,12 +22,15 @@ public class SimpleController {
     @Autowired
     AsyncService asyncService;
 
+    @Autowired
+    ApplicationContext applicationContext;
+
     @RequestMapping("/simple")
     public String simple(ModelMap model) throws InterruptedException, ExecutionException {
         // Start the clock
         long start = System.currentTimeMillis();
 
-        Future<String> result = asyncService.someMethod();
+        Future<String> result = asyncService.futureMethod();
 
         // Wait until they are all done
         while (!(result.isDone())) {
@@ -41,5 +45,7 @@ public class SimpleController {
 
         return "hello";
     }
+
+
 
 }
