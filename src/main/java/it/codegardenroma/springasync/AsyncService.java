@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Service
@@ -21,21 +22,42 @@ public class AsyncService {
      * @throws InterruptedException
      */
     @Async
-    public Future<String> futureMethod() throws InterruptedException {
-        Thread.sleep(1000L);
-        return new AsyncResult<String>("OK");
+    public Future<String> futureMethod(){
+        Future<String> future = null;
+        try {
+            Thread.sleep(1000L);
+            future = AsyncResult.forValue("OK");
+        } catch (InterruptedException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            future = AsyncResult.forExecutionException(e);
+        }
+        return future;
     }
 
     @Async
     public ListenableFuture listenableMethod() throws InterruptedException {
-        Thread.sleep(1000L);
-        return new AsyncResult<String>("OK");
+        ListenableFuture<String> listenableFuture = null;
+        try {
+            Thread.sleep(1000L);
+            listenableFuture = AsyncResult.forValue("OK");
+        } catch (InterruptedException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            listenableFuture = AsyncResult.forExecutionException(e);
+        }
+        return listenableFuture;
     }
 
     @Async
     public CompletableFuture<String> completableMethod() throws InterruptedException{
-        Thread.sleep(1000L);
-        return CompletableFuture.completedFuture("OK");
+        CompletableFuture<String> completableFuture = new CompletableFuture<String>();
+        try {
+            Thread.sleep(1000L);
+            completableFuture.complete("OK");
+        } catch (InterruptedException e) {
+            logger.error(e.getLocalizedMessage(), e);
+            completableFuture.completeExceptionally(e);
+        }
+        return completableFuture;
     }
 
 }

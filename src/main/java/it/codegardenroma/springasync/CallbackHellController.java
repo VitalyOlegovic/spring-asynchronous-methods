@@ -4,9 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.util.concurrent.ExecutionException;
 
 @Controller
 public class CallbackHellController {
@@ -17,7 +20,7 @@ public class CallbackHellController {
     AsyncService asyncService;
 
     @RequestMapping("/callbackhell")
-    public String callBackHell() throws InterruptedException {
+    public String callBackHell(ModelMap model) throws InterruptedException, ExecutionException {
         ListenableFuture<String> listenable = asyncService.listenableMethod();
         listenable.addCallback(new ListenableFutureCallback<String>(){
 
@@ -50,6 +53,8 @@ public class CallbackHellController {
 
             }
         });
+
+        model.addAttribute("message", listenable.get());
 
         return "hello";
     }

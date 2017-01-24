@@ -22,6 +22,11 @@ public class SimpleController {
     @Autowired
     ApplicationContext applicationContext;
 
+    @RequestMapping("/")
+    public String home(){
+        return "index";
+    }
+
     @RequestMapping("/simple")
     public String simple(ModelMap model) throws InterruptedException, ExecutionException {
         // Start the clock
@@ -36,9 +41,10 @@ public class SimpleController {
 
         // Print results, including elapsed time
         logger.info("Elapsed time: " + (System.currentTimeMillis() - start));
-        logger.info("--> " + result.get());
+        String resultValue = result.get();
+        logger.info("--> " + resultValue);
 
-        model.addAttribute("message", "Hello Spring MVC Framework!");
+        model.addAttribute("message", resultValue);
 
         return "hello";
     }
