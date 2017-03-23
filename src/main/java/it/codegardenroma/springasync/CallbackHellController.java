@@ -21,6 +21,7 @@ public class CallbackHellController {
 
     @RequestMapping("/callbackhell")
     public String callBackHell(ModelMap model) throws InterruptedException, ExecutionException {
+        logger.info("begin callbackhell");
         ListenableFuture<String> listenable = asyncService.listenableMethod();
         listenable.addCallback(new ListenableFutureCallback<String>(){
 
@@ -40,7 +41,7 @@ public class CallbackHellController {
 
                         @Override
                         public void onSuccess(Object o) {
-
+                            logger.info("success");
                         }
                     });
                 } catch (InterruptedException e) {
@@ -55,7 +56,7 @@ public class CallbackHellController {
         });
 
         model.addAttribute("message", listenable.get());
-
+        logger.info("end callbackhell");
         return "hello";
     }
 

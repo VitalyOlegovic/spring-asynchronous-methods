@@ -50,6 +50,9 @@ body {
         <p class="lead">The result of the computation is:<br/><br/>
             ${message}
         </p>
+        <p>
+            <button type="button" class="btn btn-lg btn-primary" id="back">Back</button>
+        </p>
       </div>
 
     </div><!-- /.container -->
@@ -59,6 +62,8 @@ body {
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
+    <script>
+        document.getElementById("back").addEventListener("click", function(){location.href='/SpringAsynchronousMethods/';});
+    </script>
 </body>
 </html>

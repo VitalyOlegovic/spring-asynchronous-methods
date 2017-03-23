@@ -49,12 +49,12 @@ body {
         <h1>Spring asynchronous methods</h1>
         <p class="lead">This example is made to show the different usages of asynchronous methods inside Spring.<br/><br/>
 
-        <button type="button" class="btn btn-lg btn-primary" onclick="location.href='simple';" >Simple</button>
-        <button type="button" class="btn btn-lg btn-primary" onclick="location.href='listenable';">Listenable</button>
-        <button type="button" class="btn btn-lg btn-primary" onclick="location.href='completable';">Completable</button><br>
+        <button type="button" class="btn btn-lg btn-primary" id="simple">Simple</button>
+        <button type="button" class="btn btn-lg btn-primary" id="listenable">Listenable</button>
+        <button type="button" class="btn btn-lg btn-primary" id="completable">Completable</button><br>
         <br/>
 
-        <button type="button" class="btn btn-lg btn-danger" onclick="location.href='callbackhell';">Callback hell</button><br>
+        <button type="button" class="btn btn-lg btn-danger" id="callbackhell">Callback hell</button><br>
         </p>
       </div>
 
@@ -65,6 +65,11 @@ body {
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
-
+    <script>
+        document.getElementById("simple").addEventListener("click", function(){location.href='simple';});
+        document.getElementById("listenable").addEventListener("click", function(){location.href='listenable';});
+        document.getElementById("completable").addEventListener("click", function(){location.href='completable';});
+        document.getElementById("callbackhell").addEventListener("click", function(){location.href='callbackhell';});
+    </script>
 </body>
 </html>

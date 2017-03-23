@@ -16,17 +16,12 @@ public class AsyncService {
 
     private static final Logger logger = LoggerFactory.getLogger(AsyncService.class);
 
-    /***
-     *
-      * @return
-     * @throws InterruptedException
-     */
     @Async
     public Future<String> futureMethod(){
         Future<String> future = null;
         try {
             Thread.sleep(1000L);
-            future = AsyncResult.forValue("OK");
+            future = AsyncResult.forValue("OK from futureMethod()");
         } catch (InterruptedException e) {
             logger.error(e.getLocalizedMessage(), e);
             future = AsyncResult.forExecutionException(e);
@@ -39,7 +34,7 @@ public class AsyncService {
         ListenableFuture<String> listenableFuture = null;
         try {
             Thread.sleep(1000L);
-            listenableFuture = AsyncResult.forValue("OK");
+            listenableFuture = AsyncResult.forValue("OK from listenableMethod()");
         } catch (InterruptedException e) {
             logger.error(e.getLocalizedMessage(), e);
             listenableFuture = AsyncResult.forExecutionException(e);
@@ -52,7 +47,7 @@ public class AsyncService {
         CompletableFuture<String> completableFuture = new CompletableFuture<String>();
         try {
             Thread.sleep(1000L);
-            completableFuture.complete("OK");
+            completableFuture.complete("OK from completableMethod()");
         } catch (InterruptedException e) {
             logger.error(e.getLocalizedMessage(), e);
             completableFuture.completeExceptionally(e);
