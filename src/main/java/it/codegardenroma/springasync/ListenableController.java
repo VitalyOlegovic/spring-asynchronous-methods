@@ -8,7 +8,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.request.async.DeferredResult;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 @Controller
@@ -20,15 +24,23 @@ public class ListenableController {
     AsyncService asyncService;
 
     @RequestMapping("/listenable")
-    public String listenable(ModelMap model) throws InterruptedException, ExecutionException {
+    public DeferredResult<ModelAndView> listenable(ModelMap model) throws InterruptedException, ExecutionException {
         ListenableFuture<String> listenable = asyncService.listenableMethod();
-        ListenableFutureCallback<String> callback = new ExampleListenableFutureCallback();
+        DeferredResult<ModelAndView> deferredResult = new DeferredResult<ModelAndView>();
+        ExampleListenableFutureCallback callback = new ExampleListenableFutureCallback();
+        callback.setDeferredResult(deferredResult);
         listenable.addCallback(callback);
         model.addAttribute("message", listenable.get());
-        return "hello";
+        return deferredResult;
     }
 
     public class ExampleListenableFutureCallback implements ListenableFutureCallback<String> {
+
+        private DeferredResult<ModelAndView> deferredResult;
+
+        public void setDeferredResult(DeferredResult<ModelAndView> deferredResult) {
+            this.deferredResult = deferredResult;
+        }
 
         @Override
         public void onFailure(Throwable throwable) {
@@ -37,6 +49,10 @@ public class ListenableController {
 
         @Override
         public void onSuccess(String s) {
+            Map<String,String> map = new HashMap<>();
+            map.put("message",s);
+            ModelAndView modelAndView = new ModelAndView("hello", map);
+            deferredResult.setResult(modelAndView);
             logger.info("Success! Result: " + s);
         }
     }
