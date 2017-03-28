@@ -27,7 +27,6 @@ public class CompletableController {
         logger.info("begin completable");
         DeferredResult<ModelAndView> deferredResult = new DeferredResult<ModelAndView>();
         CompletableFuture<String> completableFuture = asyncService.completableMethod();
-        logger.info( "The current state of the CompletableFuture is: " + completableFuture.toString());
         completableFuture = completableFuture.exceptionally(this::onException);
         completableFuture = completableFuture.thenApply(this::intermediateMethod);
         completableFuture.thenAccept((String s)->{
@@ -36,7 +35,6 @@ public class CompletableController {
             ModelAndView modelAndView = new ModelAndView("hello", map);
             deferredResult.setResult(modelAndView);
         });
-        model.addAttribute("message", completableFuture.get());
         logger.info("end completable");
         return deferredResult;
     }

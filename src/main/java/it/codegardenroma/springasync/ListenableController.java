@@ -30,7 +30,6 @@ public class ListenableController {
         ExampleListenableFutureCallback callback = new ExampleListenableFutureCallback();
         callback.setDeferredResult(deferredResult);
         listenable.addCallback(callback);
-        model.addAttribute("message", listenable.get());
         return deferredResult;
     }
 

@@ -12,6 +12,8 @@
       org.springframework.web.servlet.DispatcherServlet
     </servlet-class>
     <load-on-startup>1</load-on-startup>
+    <!-- turn on async support for servlet -->
+    <async-supported>true</async-supported>
   </servlet>
 
   <servlet-mapping>

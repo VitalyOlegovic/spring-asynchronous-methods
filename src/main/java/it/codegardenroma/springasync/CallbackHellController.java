@@ -71,7 +71,6 @@ public class CallbackHellController {
                 logger.error(throwable.getLocalizedMessage(),throwable);
             }
         });
-        model.addAttribute("message", listenable.get());
         logger.info("end callbackhell");
         return deferredResult;
     }
